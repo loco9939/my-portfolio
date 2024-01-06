@@ -1,14 +1,19 @@
+import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import Login from "./page/login";
 
 function App() {
   return (
     <>
-      <header>My Portfolio</header>
-      <main>
-        <Login />
-      </main>
-      <footer>My Portfolio footer</footer>
+      <Box component={"header"} className="header">
+        My Portfolio
+      </Box>
+      <Box component={"main"}>
+        <Outlet />
+      </Box>
+      <Box component={"footer"} className="footer">
+        My Portfolio footer
+      </Box>
     </>
   );
 }

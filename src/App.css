@@ -5,8 +5,8 @@
   grid-template-rows: auto 1fr auto;
 }
 
-header,
-footer {
+.header,
+.footer {
   background-color: #333;
   color: #fff;
   text-align: center;
