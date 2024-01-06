@@ -1,0 +1,7 @@
+.error-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 2rem;
+  text-align: center;
+}
