@@ -1,52 +1,38 @@
-import emotionStyled from "@emotion/styled";
-import { Button, ButtonBase, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import "./index.css";
 
 function Login() {
   return (
-    <Section>
-      <Typography style={{ marginBottom: "12px" }} variant="h2">
-        Login
+    <Box component={"section"} className="login-container">
+      <Typography className="login-title" variant="h2">
+        로그인
       </Typography>
 
-      <Form>
+      <Box component={"form"} className="login-form">
         <TextField
-          style={{ marginBlock: "12px" }}
+          className="input-email"
           id="Email"
           label="Email"
           variant="outlined"
         />
         <TextField
-          style={{ marginBlock: "12px" }}
+          className="input-pw"
           id="Password"
           label="Password"
           variant="outlined"
         />
-        <Button style={{ marginBlock: "12px" }} variant="contained">
-          Login
+        <Button className="login-btn" variant="contained">
+          로그인
         </Button>
-        <Link href="#">Sign Up</Link>
-      </Form>
-    </Section>
+        <Box>
+          <Link marginRight={2} href="signup">
+            회원가입
+          </Link>
+          <Link href="signin">로그인</Link>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
 export default Login;
-
-const Section = emotionStyled.section`
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid #1976D2;
-  border-radius: 8px;
-  padding: 48px 24px;
-  text-align: center;
-`;
-
-const Form = emotionStyled.form`
-   display: flex;
-   flex-direction: column;
-   margin: 0 auto;
-`;
