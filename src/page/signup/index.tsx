@@ -12,20 +12,21 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import axios from "axios";
 import "./index.css";
 
 interface Schema {
-  Email: string;
-  Password: string;
-  "Password-confirm": string;
+  email: string;
+  password: string;
+  "password-confirm": string;
 }
 
 const schema = yup.object({
-  Email: yup.string().email().required(),
-  Password: yup.string().required().min(8),
-  "Password-confirm": yup
+  email: yup.string().email().required(),
+  password: yup.string().required().min(8),
+  "password-confirm": yup
     .string()
-    .oneOf([yup.ref("Password")])
+    .oneOf([yup.ref("password")])
     .required(),
 });
 
@@ -44,7 +45,23 @@ function SignUp() {
   const handleToggleShowPasswordConfirm = () =>
     setShowPasswordConfirm(!showPasswordConfirm);
 
-  const onSubmit = (data: Schema) => console.log(data);
+  const onSubmit = (data: Schema) => {
+    console.log(data);
+    handleSignUp(data);
+  };
+
+  const handleSignUp = async (data: Schema) => {
+    const { email, password } = data;
+    try {
+      const response = await axios.post("http://localhost:5000/signup", {
+        email,
+        password,
+      });
+      console.log("response data: ", response.data);
+    } catch (error) {
+      console.error("Error signUp in: ", error);
+    }
+  };
 
   return (
     <Box component={"section"} className="login-container">
@@ -60,22 +77,22 @@ function SignUp() {
         )}
       >
         <TextField
-          {...register("Email")}
+          {...register("email")}
           className="input-email"
-          label="Email"
+          label="email"
           variant="outlined"
-          error={Boolean(errors.Email)}
+          error={Boolean(errors.email)}
           helperText={
-            Boolean(errors.Email) && "이메일 형식이 올바르지 않습니다."
+            Boolean(errors.email) && "이메일 형식이 올바르지 않습니다."
           }
         />
         <TextField
-          {...register("Password")}
+          {...register("password")}
           className="input-pw"
           type={showPassword ? "text" : "password"}
           label="Password"
           variant="outlined"
-          error={Boolean(errors.Password)}
+          error={Boolean(errors.password)}
           helperText={"8자 이상 문자, 숫자, 특수문자를 포함해주세요."}
           InputProps={{
             endAdornment: (
@@ -88,14 +105,14 @@ function SignUp() {
           }}
         />
         <TextField
-          {...register("Password-confirm")}
+          {...register("password-confirm")}
           className="input-pw"
           type={showPasswordConfirm ? "text" : "password"}
           label="Password Confirm"
           variant="outlined"
-          error={Boolean(errors["Password-confirm"])}
+          error={Boolean(errors["password-confirm"])}
           helperText={
-            errors["Password-confirm"]
+            errors["password-confirm"]
               ? "패스워드가 일치하는지 확인해주세요."
               : "패스워드를 한번 더 입력해주세요."
           }
