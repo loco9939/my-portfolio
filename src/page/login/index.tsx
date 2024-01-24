@@ -14,7 +14,8 @@ import { useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useLogin } from "@/routes/root.hooks";
 
 interface Schema {
   email: string;
@@ -46,10 +47,10 @@ function Login() {
         email,
         password,
       });
-      // TODO: 로그인 정보 로컬스토리지에 저장하자. 자동 로그인 구현하기
       window.localStorage.setItem("user", JSON.stringify({ email }));
+      // TODO: 로그인 성공 시 <Dashboard /> 컴포넌트 렌더링 되지만, URL은 signin으로 유지되는 문제
       alert("로그인에 성공했습니다!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       const { response } = error as unknown as AxiosError;
 
@@ -62,6 +63,12 @@ function Login() {
   const onSubmit = (data: Schema) => {
     handleSignIn(data);
   };
+
+  const isLoggedIn = useLogin();
+
+  if (isLoggedIn) {
+    return <Navigate to={"/dashboard"} />;
+  }
 
   return (
     <Box component={"section"} className="login-container">
