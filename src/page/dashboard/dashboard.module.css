@@ -1,0 +1,22 @@
+.wrapper {
+  text-align: center;
+  padding: 24px;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.form {
+  > div {
+    width: 210px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  .submitBtn {
+    display: block;
+    margin-top: 24px;
+    margin-inline: auto;
+  }
+}
