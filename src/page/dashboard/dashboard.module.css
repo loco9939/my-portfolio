@@ -1,6 +1,8 @@
 .wrapper {
+  position: relative;
   text-align: center;
   padding: 24px;
+  height: 100%;
 }
 
 .title {
@@ -9,14 +11,31 @@
 }
 
 .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   > div {
-    width: 210px;
-    margin-right: 16px;
-    margin-bottom: 16px;
+    width: 450px;
+    margin-block: 16px;
   }
   .submitBtn {
     display: block;
     margin-top: 24px;
     margin-inline: auto;
   }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.chartWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

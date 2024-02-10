@@ -1,163 +1,85 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useLogin } from "@/routes/root.hooks";
+
+import { convertPieChartData } from "@/utils/convertPieChartData";
+import { getUserFinancial } from "@/utils/getUser";
+import { Box, Button, Typography } from "@mui/material";
+import { PieChart, pieArcLabelClasses } from "@mui/x-charts";
+import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
 import styles from "./dashboard.module.css";
 
-/** 자산 종류
- * 현금(원화)
- * 달러
- * 저축(예금 및 적금 또는 비상금 등)
- * 주식
- * 채권
- * 금
- * 부동산
- */
-interface Schema {
-  cashWon: number;
-  cashDollar: number;
-  saving: number;
-  stock: number;
-  bond: number;
-  gold: number;
-  realEstate: number;
-}
-
-const schema = yup.object({
-  cashWon: yup.number().min(0).required(),
-  cashDollar: yup.number().min(0).required(),
-  saving: yup.number().min(0).required(),
-  stock: yup.number().min(0).required(),
-  bond: yup.number().min(0).required(),
-  gold: yup.number().min(0).required(),
-  realEstate: yup.number().min(0).required(),
-});
+type Tab = "monthly" | "proportion";
 
 function Dashboard() {
-  // TODO: User 데이터가 있으면 데이터 바로 띄워주고 없다면, 데이터 입력하기
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
+  const isLoggedIn = useLogin();
+  const userFinancialData = getUserFinancial();
 
-  const handleAssets = async (data: Schema) => {
-    const { cashWon, cashDollar, saving, stock, bond, gold, realEstate } = data;
+  const [tab, setTab] = useState<Tab>("proportion");
 
-    // try {
-    //   await axios.post("http://localhost:5000/signin", {
-    //     email,
-    //     password,
-    //   });
-    //   window.localStorage.setItem("user", JSON.stringify({ email }));
-    //   alert("로그인에 성공했습니다!");
-    //   navigate("/dashboard");
-    // } catch (error) {
-    //   const { response } = error as unknown as AxiosError;
+  const onClickTab = (tab: Tab) => setTab(tab);
 
-    //   if (response?.status === 401) {
-    //     alert("아이디 또는 비밀번호를 확인해주세요.");
-    //   }
-    // }
-  };
+  useLayoutEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/signin");
+    } else if (!userFinancialData) {
+      navigate("/register-assets");
+    }
+  }, [isLoggedIn, userFinancialData, navigate]);
 
-  const onSubmit = (data: Schema) => {
-    handleAssets(data);
-  };
+  const pieChartData = convertPieChartData(userFinancialData);
+  const assetsSum = pieChartData.reduce((acc, data) => acc + data.value, 0);
 
   return (
     <Box component={"section"} className={styles.wrapper}>
       <Typography className={styles.title} variant="h2">
-        나의 자산
+        나의 자산 통계
       </Typography>
 
-      <Box
-        component={"form"}
-        className={styles.form}
-        onSubmit={handleSubmit(onSubmit, (data) =>
-          console.log("on Submit Error: ", data)
-        )}
-      >
-        <TextField
-          {...register("cashWon")}
-          label="현금"
-          variant="outlined"
-          error={Boolean(errors.cashWon)}
-          helperText={
-            errors.cashWon
-              ? "0이상의 숫자를 입력해주세요."
-              : "현금(원화)를 입력해주세요."
-          }
-        />
-        <TextField
-          {...register("cashDollar")}
-          type="text"
-          label="달러"
-          variant="outlined"
-          error={Boolean(errors.cashDollar)}
-          helperText={
-            Boolean(errors.cashDollar) && "0이상의 숫자를 입력해주세요."
-          }
-        />
-
-        <TextField
-          {...register("saving")}
-          label="저축"
-          variant="outlined"
-          error={Boolean(errors.saving)}
-          helperText={
-            errors.saving
-              ? "0이상의 숫자를 입력해주세요."
-              : "적금,비상금을 입력해주세요."
-          }
-        />
-        <TextField
-          {...register("stock")}
-          type="text"
-          label="주식"
-          variant="outlined"
-          error={Boolean(errors.stock)}
-          helperText={
-            errors.stock
-              ? "0이상의 숫자를 입력해주세요."
-              : "국내주식, 해외주식을 입력해주세요."
-          }
-        />
-
-        <TextField
-          {...register("bond")}
-          label="채권"
-          variant="outlined"
-          error={Boolean(errors.bond)}
-          helperText={errors.bond ? "0이상의 숫자를 입력해주세요." : ""}
-        />
-
-        <TextField
-          {...register("gold")}
-          label="금"
-          variant="outlined"
-          error={Boolean(errors.gold)}
-          helperText={errors.gold ? "0이상의 숫자를 입력해주세요." : ""}
-        />
-
-        <TextField
-          {...register("realEstate")}
-          label="부동산"
-          variant="outlined"
-          error={Boolean(errors.realEstate)}
-          helperText={
-            errors.realEstate
-              ? "0이상의 숫자를 입력해주세요."
-              : "보유한 부동산 금액을 입력해주세요."
-          }
-        />
-
-        <Button variant="contained" type="submit" className={styles.submitBtn}>
-          제출하기
+      <Box component={"div"} className={styles.buttonWrapper}>
+        <Button
+          variant={tab === "proportion" ? "contained" : "outlined"}
+          onClick={() => onClickTab("proportion")}
+        >
+          비중별 보기
         </Button>
+        <Button
+          variant={tab === "monthly" ? "contained" : "outlined"}
+          onClick={() => onClickTab("monthly")}
+        >
+          월별 보기
+        </Button>
+      </Box>
+
+      <Box component={"div"} className={styles.chartWrapper}>
+        <Box>
+          <PieChart
+            series={[
+              {
+                data: pieChartData,
+                innerRadius: 5,
+                paddingAngle: 2,
+                cornerRadius: 5,
+                valueFormatter: (value) =>
+                  `${value.value.toLocaleString("ko-KR")} 원`,
+                arcLabel: (item) =>
+                  `${((item.value / assetsSum) * 100).toFixed(2)} %`,
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontWeight: "bold",
+                fontSize: "18px",
+              },
+            }}
+            width={600}
+            height={400}
+          />
+          <Typography margin={4} variant="body2">
+            {userFinancialData?.date.slice(0, 10)} 기준
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
