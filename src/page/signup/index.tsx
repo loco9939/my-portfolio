@@ -1,3 +1,4 @@
+import { postSignUp } from "@/apis";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
@@ -11,11 +12,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import axios from "axios";
 import "./index.css";
 
-interface Schema {
+interface SignUpSchema {
   email: string;
   password: string;
   "password-confirm": string;
@@ -36,6 +37,7 @@ function SignUp() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -45,21 +47,20 @@ function SignUp() {
   const handleToggleShowPasswordConfirm = () =>
     setShowPasswordConfirm(!showPasswordConfirm);
 
-  const onSubmit = (data: Schema) => {
+  const onSubmit = (data: SignUpSchema) => {
     console.log(data);
     handleSignUp(data);
   };
 
-  const handleSignUp = async (data: Schema) => {
+  const handleSignUp = async (data: SignUpSchema) => {
     const { email, password } = data;
+
     try {
-      const response = await axios.post("http://localhost:5000/signup", {
-        email,
-        password,
-      });
-      console.log("response data: ", response.data);
+      await postSignUp({ email, password });
+      alert("회원가입에 성공했습니다!");
+      navigate("/signin");
     } catch (error) {
-      console.error("Error signUp in: ", error);
+      console.error("Error signup in: ", error);
     }
   };
 

@@ -1,3 +1,7 @@
+import { postSignIn } from "@/apis";
+import { useLogin } from "@/routes/root.hooks";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -7,17 +11,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import "./index.css";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios, { AxiosError } from "axios";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useLogin } from "@/routes/root.hooks";
+import * as yup from "yup";
+import "./index.css";
 
-interface Schema {
+interface LoginSchema {
   email: string;
   password: string;
 }
@@ -39,35 +40,35 @@ function Login() {
 
   const handleToggleShowPassword = () => setShowPassword(!showPassword);
 
-  const handleSignIn = async (data: Schema) => {
+  const handleSignIn = async (data: LoginSchema) => {
     const { email, password } = data;
 
     try {
-      await axios.post("http://localhost:5000/signin", {
-        email,
-        password,
-      });
-      window.localStorage.setItem("user", JSON.stringify({ email }));
-      // TODO: 로그인 성공 시 <Dashboard /> 컴포넌트 렌더링 되지만, URL은 signin으로 유지되는 문제
+      const { data } = await postSignIn({ email, password });
+      window.localStorage.setItem("user", JSON.stringify({ email, ...data }));
+      //   // TODO: 로그인 성공 시 <Dashboard /> 컴포넌트 렌더링 되지만, URL은 signin으로 유지되는 문제
       alert("로그인에 성공했습니다!");
-      navigate("/dashboard");
+
+      if (data.financialData) {
+        return navigate("/");
+      }
+      navigate("/register-assets");
     } catch (error) {
       const { response } = error as unknown as AxiosError;
-
       if (response?.status === 401) {
         alert("아이디 또는 비밀번호를 확인해주세요.");
       }
     }
   };
 
-  const onSubmit = (data: Schema) => {
+  const onSubmit = (data: LoginSchema) => {
     handleSignIn(data);
   };
 
   const isLoggedIn = useLogin();
 
   if (isLoggedIn) {
-    return <Navigate to={"/dashboard"} />;
+    return <Navigate to={"/"} />;
   }
 
   return (

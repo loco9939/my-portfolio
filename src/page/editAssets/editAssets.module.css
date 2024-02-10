@@ -1,0 +1,26 @@
+.wrapper {
+  text-align: center;
+  padding: 24px;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    width: 450px;
+    margin-block: 16px;
+  }
+  .submitBtn {
+    display: block;
+    margin-top: 24px;
+    margin-inline: auto;
+  }
+}
