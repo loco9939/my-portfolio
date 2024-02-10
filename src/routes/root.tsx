@@ -1,27 +1,22 @@
-import { Box } from "@mui/material";
-import "./root.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import App from "@/App";
+import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import "./root.css";
 import { useLogin } from "./root.hooks";
-import { useEffect } from "react";
 
 function Root() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const isLoggedIn = useLogin();
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/signin");
-    } else if (location.pathname === "/") {
-      navigate("/dashboard");
-    }
-  }, [isLoggedIn, location.pathname, navigate]);
+  const onClickLogout = () => window.localStorage.removeItem("user");
 
   return (
     <>
       <Box component={"header"} className="header">
         <Link to={"/"}>My Portfolio</Link>
+        {isLoggedIn && (
+          <Link to={"/signin"} onClick={onClickLogout} className="logout">
+            Logout
+          </Link>
+        )}
       </Box>
       <Box component={"main"}>
         <App />

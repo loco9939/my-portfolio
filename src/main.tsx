@@ -1,20 +1,24 @@
 import { StyledEngineProvider } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./styles/_reset.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./page/dashboard/index.tsx";
+import EditAssets from "./page/editAssets/index.tsx";
 import ErrorPage from "./page/errorPage/index.tsx";
-import SignUp from "./page/signup/index.tsx";
 import Login from "./page/login/index.tsx";
+import RegisterAssets from "./page/registerAssets/index.tsx";
+import SignUp from "./page/signup/index.tsx";
 import Root from "./routes/root.tsx";
+import "./styles/_reset.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
-      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/", element: <Dashboard /> },
+      { path: "/register-assets", element: <RegisterAssets /> },
+      { path: "/edit-assets", element: <EditAssets /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/signin", element: <Login /> },
     ],

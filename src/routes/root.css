@@ -13,3 +13,8 @@
   padding-block: 20px;
   font-size: 2rem;
 }
+
+.logout {
+  position: absolute;
+  right: 24px;
+}
