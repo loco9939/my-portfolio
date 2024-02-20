@@ -20,9 +20,14 @@ export const postSignIn = async ({ email, password }: PostSignup) =>
     password,
   });
 
+interface MonthlyAssets {
+  userId: string;
+  lastUpdate: string;
+  monthlyAssets: { [monthlyYear: string]: IAssets };
+}
 type AssetsParams = {
   userId: string;
-} & IAssets;
+} & MonthlyAssets;
 
 export const postAssets = async (params: AssetsParams) => {
   await axios.post(`http://localhost:${PORT}/save-financial-data`, params);

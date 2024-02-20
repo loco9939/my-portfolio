@@ -2,6 +2,7 @@ import { postAssets } from "@/apis";
 import { getUserFinancial, getUserId } from "@/utils/getUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -41,12 +42,26 @@ function RegisterAssets() {
   const userFinancialData = getUserFinancial();
 
   const handleAssets = async (data: IAssets) => {
-    const params = { userId: userId ?? "", ...data };
+    const MMM_YYYY = dayjs().format("YYYYMM");
+    const YYYY_MM = dayjs().format("YYYY-MM");
+
+    console.log("MMM_YYYY: ", MMM_YYYY);
+    const params = {
+      userId: userId ?? "",
+      lastUpdate: YYYY_MM,
+      monthlyAssets: {
+        [MMM_YYYY]: data,
+      },
+    };
     try {
       await postAssets(params);
       window.localStorage.setItem(
         "user",
-        JSON.stringify({ userId, financialData: data })
+        JSON.stringify({
+          userId,
+          lastUpdate: YYYY_MM,
+          monthlyAssets: { [MMM_YYYY]: data },
+        })
       );
       alert("자산이 저장되었습니다.");
       navigate("/");

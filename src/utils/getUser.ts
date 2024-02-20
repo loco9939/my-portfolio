@@ -8,7 +8,8 @@ export interface FinancialData {
 }
 interface User {
   email: string;
-  financialData?: FinancialData;
+  lastUpdate: string;
+  monthlyAssets: { [key: string]: FinancialData };
 }
 
 export const getUserId = () => {
@@ -24,5 +25,5 @@ export const getUserFinancial = () => {
   if (!localUser) return;
 
   const user: User = JSON.parse(localUser);
-  return user?.financialData;
+  return user?.monthlyAssets;
 };

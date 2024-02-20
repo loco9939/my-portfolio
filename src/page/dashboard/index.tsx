@@ -27,7 +27,7 @@ function Dashboard() {
     }
   }, [isLoggedIn, userFinancialData, navigate]);
 
-  const pieChartData = convertPieChartData(userFinancialData);
+  const pieChartData = convertPieChartData(Object.values(userFinancialData)[0]);
   const assetsSum = pieChartData.reduce((acc, data) => acc + data.value, 0);
 
   return (
@@ -77,7 +77,7 @@ function Dashboard() {
             height={400}
           />
           <Typography margin={4} variant="body2">
-            {userFinancialData?.date.slice(0, 10)} 기준
+            {userFinancialData?.date?.slice(0, 10)} 기준
           </Typography>
         </Box>
       </Box>
