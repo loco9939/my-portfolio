@@ -1,33 +1,23 @@
-import { useLogin } from "@/routes/root.hooks";
-
 import { convertPieChartData } from "@/utils/convertPieChartData";
-import { getUserFinancial } from "@/utils/getUser";
+import { getLastUpdateDate, getUserFinancial } from "@/utils/getUser";
 import { Box, Button, Typography } from "@mui/material";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts";
-import { useLayoutEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styles from "./dashboard.module.css";
 
 type Tab = "monthly" | "proportion";
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const isLoggedIn = useLogin();
-  const userFinancialData = getUserFinancial();
+  const financialData = getUserFinancial();
+  const lastUpdate = getLastUpdateDate();
 
   const [tab, setTab] = useState<Tab>("proportion");
 
   const onClickTab = (tab: Tab) => setTab(tab);
 
-  useLayoutEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/signin");
-    } else if (!userFinancialData) {
-      navigate("/register-assets");
-    }
-  }, [isLoggedIn, userFinancialData, navigate]);
-
-  const pieChartData = convertPieChartData(Object.values(userFinancialData)[0]);
+  const pieChartData = convertPieChartData(
+    Object.values(financialData ?? {})[0]
+  );
   const assetsSum = pieChartData.reduce((acc, data) => acc + data.value, 0);
 
   return (
@@ -77,7 +67,7 @@ function Dashboard() {
             height={400}
           />
           <Typography margin={4} variant="body2">
-            {userFinancialData?.date?.slice(0, 10)} 기준
+            {lastUpdate} 기준
           </Typography>
         </Box>
       </Box>

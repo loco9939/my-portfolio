@@ -15,12 +15,12 @@
   align-items: center;
 
   > div {
-    width: 450px;
+    /* width: 450px; */
     margin-block: 16px;
   }
   .submitBtn {
-    display: block;
+    /* display: block;
     margin-top: 24px;
-    margin-inline: auto;
+    margin-inline: auto; */
   }
 }

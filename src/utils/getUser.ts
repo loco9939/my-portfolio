@@ -4,7 +4,6 @@ export interface FinancialData {
   stock: number;
   realEstate: number;
   debt: number;
-  date: string;
 }
 interface User {
   email: string;
@@ -25,5 +24,13 @@ export const getUserFinancial = () => {
   if (!localUser) return;
 
   const user: User = JSON.parse(localUser);
-  return user?.monthlyAssets;
+  return user.monthlyAssets;
+};
+
+export const getLastUpdateDate = () => {
+  const localUser = localStorage.getItem("user");
+  if (!localUser) return;
+
+  const user: User = JSON.parse(localUser);
+  return user.lastUpdate;
 };
