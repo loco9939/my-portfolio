@@ -18,9 +18,30 @@
     /* width: 450px; */
     margin-block: 16px;
   }
+
+  .rowWrapper {
+    position: relative;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
   .submitBtn {
     /* display: block;
     margin-top: 24px;
     margin-inline: auto; */
+  }
+
+  .addBtn {
+    margin-top: 14px;
+  }
+
+  .removeBtn {
+    position: absolute;
+    top: 10px;
+    right: -70px;
   }
 }
