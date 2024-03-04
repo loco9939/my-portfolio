@@ -76,7 +76,7 @@ function RegisterAssets() {
 
   useEffect(() => {
     if (userFinancialData) {
-      navigate("/edit-assets");
+      navigate("/");
     }
   }, [userFinancialData, navigate]);
 

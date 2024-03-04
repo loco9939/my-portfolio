@@ -25,12 +25,15 @@ interface MonthlyAssets {
   lastUpdate: string;
   monthlyAssets: { [monthlyYear: string]: IAssets };
 }
-type AssetsParams = {
-  userId: string;
-} & MonthlyAssets;
 
-export const postAssets = async (params: AssetsParams) => {
+export const postAssets = async (params: MonthlyAssets) => {
   await axios.post(`http://localhost:${PORT}/save-financial-data`, params);
 };
 
-export const putAssets = async (params: AssetsParams) => {};
+// TODO: 첫 등록한 데이터에 업데이트한 것 DB에 저장하기.
+export const updateAssets = async (params: MonthlyAssets) => {
+  await axios.patch(
+    `http://localhost:${PORT}/update-financial-data/:${params.userId}`,
+    params
+  );
+};

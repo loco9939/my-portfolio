@@ -15,9 +15,21 @@ function Dashboard() {
 
   const onClickTab = (tab: Tab) => setTab(tab);
 
-  const pieChartData = convertPieChartData(
-    Object.values(financialData ?? {})[0]
+  const totalFinancialData = Object.values(financialData ?? {}).reduce(
+    (acc, cur) => {
+      const { cashWon, saving, stock, realEstate, debt } = cur;
+      return {
+        cashWon: acc.cashWon + cashWon,
+        saving: acc.saving + saving,
+        stock: acc.stock + stock,
+        realEstate: acc.realEstate + realEstate,
+        debt: acc.debt + debt,
+      };
+    },
+    { cashWon: 0, saving: 0, stock: 0, realEstate: 0, debt: 0 }
   );
+
+  const pieChartData = convertPieChartData(totalFinancialData);
   const assetsSum = pieChartData.reduce((acc, data) => acc + data.value, 0);
 
   return (
