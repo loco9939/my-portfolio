@@ -53,7 +53,7 @@ const schema = yup.object().shape({
 
 function EditAssets() {
   const navigate = useNavigate();
-  const userId = getUserId();
+  const email = getUserId();
   const financialData = getUserFinancial();
   const converted = Object.entries(financialData ?? {}).map(([key, value]) => {
     return { date: key, ...value };
@@ -81,9 +81,9 @@ function EditAssets() {
         const { date, ...rest } = cur;
         return { ...acc, [date]: { ...rest } };
       }, {});
-    console.log("userId: ", userId);
+
     const params = {
-      userId: userId ?? "",
+      email: email ?? "",
       lastUpdate: dayjs().format("YYYY-MM"),
       monthlyAssets,
     };
@@ -93,7 +93,7 @@ function EditAssets() {
       window.localStorage.setItem(
         "user",
         JSON.stringify({
-          email: userId ?? "",
+          email: email ?? "",
           lastUpdate: dayjs().format("YYYY-MM"),
           monthlyAssets,
         })
