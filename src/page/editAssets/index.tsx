@@ -1,8 +1,9 @@
-import { postAssets } from "@/apis";
+import { updateAssets } from "@/apis";
 import { getUserFinancial, getUserId } from "@/utils/getUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -74,11 +75,30 @@ function EditAssets() {
   });
 
   const handleAssets = async (data: FormValues) => {
-    const params = { userId: userId ?? "", ...data };
+    const monthlyAssets = Object.values(data)
+      .flat()
+      .reduce((acc, cur) => {
+        const { date, ...rest } = cur;
+        return { ...acc, [date]: { ...rest } };
+      }, {});
+    console.log("userId: ", userId);
+    const params = {
+      userId: userId ?? "",
+      lastUpdate: dayjs().format("YYYY-MM"),
+      monthlyAssets,
+    };
     try {
-      await postAssets(params);
-      window.localStorage.setItem("user", JSON.stringify({ userId, ...data }));
-      alert("자산이 저장되었습니다.");
+      await updateAssets(params);
+      // TODO: 로컬스토리지에서는 userId가 email로 저장되는데, 어딘가 userId로 사용되는 부분이 꼬이는 문제가 있다.
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          email: userId ?? "",
+          lastUpdate: dayjs().format("YYYY-MM"),
+          monthlyAssets,
+        })
+      );
+      alert("자산이 수정되었습니다.");
       navigate("/");
     } catch (error) {
       console.error("Error in Saving Finacial Data: ", error);
@@ -86,7 +106,6 @@ function EditAssets() {
   };
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
     handleAssets(data);
   };
 
@@ -197,6 +216,316 @@ function EditAssets() {
           </Button>
         </Stack>
       </Box>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          padding: 12,
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          display: "inline-flex",
+        }}
+      >
+        <div
+          style={{
+            alignSelf: "stretch",
+            height: 248,
+            paddingTop: 4,
+            paddingBottom: 4,
+            background: "rgba(255, 255, 255, 0.02)",
+            borderRadius: 4,
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            display: "flex",
+          }}
+        >
+          <div
+            style={{
+              alignSelf: "stretch",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 0",
+                height: 48,
+                padding: 12,
+                borderRadius: 4,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 8,
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 20, height: 20, position: "relative" }}>
+                <div
+                  style={{
+                    width: 11.67,
+                    height: 1.67,
+                    left: 4.17,
+                    top: 9.17,
+                    position: "absolute",
+                    background: "rgba(255, 255, 255, 0.80)",
+                  }}
+                ></div>
+              </div>
+              <div
+                style={{
+                  flex: "1 1 0",
+                  color: "white",
+                  fontSize: 14,
+                  fontFamily: "Spoqa Han Sans Neo",
+                  fontWeight: "400",
+                  lineHeight: 20.01,
+                  wordWrap: "break-word",
+                }}
+              >
+                depth1
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              alignSelf: "stretch",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 0",
+                height: 48,
+                padding: 12,
+                borderRadius: 4,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 8,
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, height: 20, position: "relative" }}>
+                <div
+                  style={{
+                    width: 11.67,
+                    height: 1.67,
+                    left: 4.17,
+                    top: 9.17,
+                    position: "absolute",
+                    background: "rgba(255, 255, 255, 0.80)",
+                  }}
+                ></div>
+              </div>
+              <div
+                style={{
+                  flex: "1 1 0",
+                  color: "white",
+                  fontSize: 14,
+                  fontFamily: "Spoqa Han Sans Neo",
+                  fontWeight: "400",
+                  lineHeight: 20.01,
+                  wordWrap: "break-word",
+                }}
+              >
+                depth2
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              alignSelf: "stretch",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 0",
+                height: 48,
+                padding: 12,
+                borderRadius: 4,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 8,
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, height: 20, position: "relative" }}>
+                <div
+                  style={{
+                    width: 11.67,
+                    height: 1.67,
+                    left: 4.17,
+                    top: 9.17,
+                    position: "absolute",
+                    background: "rgba(255, 255, 255, 0.80)",
+                  }}
+                ></div>
+              </div>
+              <div
+                style={{
+                  flex: "1 1 0",
+                  color: "white",
+                  fontSize: 14,
+                  fontFamily: "Spoqa Han Sans Neo",
+                  fontWeight: "400",
+                  lineHeight: 20.01,
+                  wordWrap: "break-word",
+                }}
+              >
+                depth3
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              alignSelf: "stretch",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 0",
+                height: 48,
+                padding: 12,
+                borderRadius: 4,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 8,
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, alignSelf: "stretch", padding: 12 }} />
+              <div style={{ width: 20, height: 20, position: "relative" }}>
+                <div
+                  style={{
+                    width: 3.33,
+                    height: 3.33,
+                    left: 8.33,
+                    top: 8.33,
+                    position: "absolute",
+                    background: "rgba(255, 255, 255, 0.80)",
+                  }}
+                ></div>
+              </div>
+              <div
+                style={{
+                  flex: "1 1 0",
+                  color: "white",
+                  fontSize: 14,
+                  fontFamily: "Spoqa Han Sans Neo",
+                  fontWeight: "400",
+                  lineHeight: 20.01,
+                  wordWrap: "break-word",
+                }}
+              >
+                depth4
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              alignSelf: "stretch",
+              background: "rgba(255, 255, 255, 0.04)",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 0",
+                height: 48,
+                padding: 12,
+                borderRadius: 4,
+                justifyContent: "space-between",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <div
+                style={{
+                  height: 24,
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 8,
+                  display: "flex",
+                }}
+              >
+                <div style={{ width: 20, height: 24, padding: 12 }} />
+                <div style={{ width: 20, height: 20, position: "relative" }}>
+                  <div
+                    style={{
+                      width: 11.67,
+                      height: 11.67,
+                      left: 4.17,
+                      top: 4.17,
+                      position: "absolute",
+                      background: "rgba(255, 255, 255, 0.80)",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 0",
+                    color: "white",
+                    fontSize: 14,
+                    fontFamily: "Spoqa Han Sans Neo",
+                    fontWeight: "500",
+                    lineHeight: 20.01,
+                    wordWrap: "break-word",
+                  }}
+                >
+                  고양이 용품
+                </div>
+              </div>
+              <div
+                style={{
+                  width: 20,
+                  height: 20,
+                  padding: 1.67,
+                  background: "rgba(255, 255, 255, 0.04)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                <div
+                  style={{
+                    width: 16.67,
+                    height: 16.67,
+                    position: "relative",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    display: "flex",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 12.5,
+                      height: 12.5,
+                      background: "rgba(255, 255, 255, 0.80)",
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </Box>
   );
 }

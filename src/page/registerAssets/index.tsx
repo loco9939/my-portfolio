@@ -38,7 +38,7 @@ function RegisterAssets() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
-  const userId = getUserId();
+  const email = getUserId();
   const userFinancialData = getUserFinancial();
 
   const handleAssets = async (data: IAssets) => {
@@ -47,7 +47,7 @@ function RegisterAssets() {
 
     console.log("MMM_YYYY: ", MMM_YYYY);
     const params = {
-      userId: userId ?? "",
+      email: email ?? "",
       lastUpdate: YYYY_MM,
       monthlyAssets: {
         [MMM_YYYY]: data,
@@ -58,7 +58,7 @@ function RegisterAssets() {
       window.localStorage.setItem(
         "user",
         JSON.stringify({
-          userId,
+          email,
           lastUpdate: YYYY_MM,
           monthlyAssets: { [MMM_YYYY]: data },
         })
