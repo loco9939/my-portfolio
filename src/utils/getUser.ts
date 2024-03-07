@@ -5,10 +5,15 @@ export interface FinancialData {
   realEstate: number;
   debt: number;
 }
+
+export interface MonthlyAssets {
+  [key: string]: FinancialData;
+}
+
 interface User {
   email: string;
   lastUpdate: string;
-  monthlyAssets: { [key: string]: FinancialData };
+  monthlyAssets: MonthlyAssets;
 }
 
 export const getUserId = () => {
