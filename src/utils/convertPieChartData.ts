@@ -1,4 +1,4 @@
-import { FinancialData } from "./getUser";
+import { MonthlyAssets } from "./getUser";
 
 const KEY_DISPLAY: { [key: string]: string } = {
   cashWon: "현금",
@@ -16,10 +16,23 @@ const COLOR: { [key: string]: string } = {
   debt: "red",
 };
 
-export const convertPieChartData = (data?: FinancialData) => {
-  if (!data) return [];
+export const convertPieChartData = (data: MonthlyAssets) => {
+  // TODO: 월별 자산 총합이 아닌 최신 날짜를 기준으로 비중 노출
+  const totalFinancialData = Object.values(data ?? {}).reduce(
+    (acc, cur) => {
+      const { cashWon, saving, stock, realEstate, debt } = cur;
+      return {
+        cashWon: acc.cashWon + cashWon,
+        saving: acc.saving + saving,
+        stock: acc.stock + stock,
+        realEstate: acc.realEstate + realEstate,
+        debt: acc.debt + debt,
+      };
+    },
+    { cashWon: 0, saving: 0, stock: 0, realEstate: 0, debt: 0 }
+  );
 
-  const chartData = Object.entries(data)
+  const chartData = Object.entries(totalFinancialData)
     .map(([key, value]) => {
       if (value === 0 || key === "date") return;
       return {
