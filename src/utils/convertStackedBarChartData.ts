@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 import { MonthlyAssets } from "./getUser";
 
 export const STACKED_BAR_COLOR: { [key: string]: string } = {
-  cashWon: "#27B2AF",
-  saving: "#2E96FF",
-  stock: "#B820D8",
-  realEstate: "yellow",
-  debt: "red",
+  cashWon: "#1876D2",
+  saving: "#009DE6",
+  stock: "#00BED8",
+  realEstate: "#00D9B1",
+  debt: "#8DEE86",
 };
 
 export const convertStackedBarChartData = (monthlyAssets?: MonthlyAssets) => {

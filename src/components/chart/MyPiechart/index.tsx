@@ -11,8 +11,8 @@ interface Props {
 function MyPiechart({ data, assetsSum }: Props) {
   return (
     <PieChart
-      width={900}
-      height={600}
+      width={600}
+      height={400}
       series={[
         {
           data,
@@ -35,6 +35,14 @@ function MyPiechart({ data, assetsSum }: Props) {
           fill: "white",
           fontWeight: "bold",
           fontSize: "1rem",
+        },
+      }}
+      slotProps={{
+        legend: {
+          labelStyle: {
+            fontSize: "1.3rem",
+            paddingBlock: "8px",
+          },
         },
       }}
     />

@@ -43,22 +43,22 @@ function Dashboard() {
         </Button>
       </Box>
 
-      <Box component={"section"} className={styles.chartWrapper}>
+      <Box component={"section"} className={styles.chartContainer}>
         {tab === "proportion" ? (
-          <Box component={"div"}>
+          <Box component={"div"} className={styles.chartWrapper}>
             <MyPiechart data={pieChartData} assetsSum={assetsSum} />
-            <Typography margin={4} variant="body2">
-              {lastUpdate} 기준
-            </Typography>
           </Box>
         ) : (
           <Box component={"div"}>
             <MyStackedBarchart data={stackedBarChartData} />
-            <Typography margin={4} variant="body2">
-              {lastUpdate} 기준
-            </Typography>
           </Box>
         )}
+        <Typography variant="body2" className={styles.totalText}>
+          총 자산 {assetsSum.toLocaleString("ko-KR")} 원
+        </Typography>
+        <Typography variant="body2" className={styles.updateText}>
+          {lastUpdate} 기준
+        </Typography>
       </Box>
     </Box>
   );
