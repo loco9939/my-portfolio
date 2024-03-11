@@ -11,7 +11,14 @@ function Root() {
   const isLoggedIn = useLogin();
   const userFinancialData = getUserFinancial();
 
-  const onClickLogout = () => window.localStorage.removeItem("user");
+  const onClickLogout = () => {
+    if (!confirm("로그아웃 하시겠습니까?")) {
+      // 취소 클릭시,
+    } else {
+      // 확인 클릭시,
+      window.localStorage.removeItem("user");
+    }
+  };
 
   useEffect(() => {
     if (!isLoggedIn) {
