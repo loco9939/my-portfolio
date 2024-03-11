@@ -17,10 +17,10 @@ const COLOR: { [key: string]: string } = {
 };
 
 export const convertPieChartData = (data: MonthlyAssets) => {
-  const sortedKeys = Object.keys(data).sort((a, b) => b.localeCompare(a));
+  const sortedKeys = Object.keys(data ?? {}).sort((a, b) => b.localeCompare(a));
   const latestFinancialData = data[sortedKeys[0]];
 
-  const chartData = Object.entries(latestFinancialData)
+  const chartData = Object.entries(latestFinancialData ?? {})
     .map(([key, value]) => {
       if (value === 0 || key === "date") return;
       return {

@@ -24,7 +24,14 @@ interface SignUpSchema {
 
 const schema = yup.object({
   email: yup.string().email().required(),
-  password: yup.string().required().min(8),
+  password: yup
+    .string()
+    .min(8, "패스워드는 최소 8자 이상이어야 합니다.")
+    .matches(
+      /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      "숫자와 특수문자를 포함해야 합니다."
+    )
+    .required(),
   "password-confirm": yup
     .string()
     .oneOf([yup.ref("password")])
