@@ -8,6 +8,7 @@ import ErrorPage from "./page/errorPage/index.tsx";
 import Login from "./page/login/index.tsx";
 import RegisterAssets from "./page/registerAssets/index.tsx";
 import SignUp from "./page/signup/index.tsx";
+import PrivateRoute from "./routes/PrivateRoute/index.tsx";
 import Root from "./routes/root.tsx";
 import "./styles/_reset.css";
 
@@ -16,19 +17,40 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     children: [
-      { path: "/", element: <Dashboard /> },
-      { path: "/register-assets", element: <RegisterAssets /> },
-      { path: "/edit-assets", element: <EditAssets /> },
+      {
+        path: "/",
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/register-assets",
+        element: (
+          <PrivateRoute>
+            <RegisterAssets />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/edit-assets",
+        element: (
+          <PrivateRoute>
+            <EditAssets />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/signin",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
     ],
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "/signin",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
   },
 ]);
 
