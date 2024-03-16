@@ -122,7 +122,22 @@ function EditAssets() {
   };
 
   const deleteAsset = (index: number) => {
-    remove(index);
+    if (!confirm("해당 날짜의 자산을 삭제하시겠습니까?")) {
+      // 취소 클릭시
+    } else {
+      // 확인 클릭시
+      remove(index);
+    }
+  };
+
+  const onCancel = () => {
+    if (
+      !confirm("자산 수정을 취소하시겠습니까? (수정 전 자산으로 적용됩니다.)")
+    ) {
+      // 취소 클릭시
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -210,7 +225,7 @@ function EditAssets() {
             variant="contained"
             type="button"
             color="error"
-            onClick={() => navigate("/")}
+            onClick={onCancel}
           >
             취소
           </Button>
