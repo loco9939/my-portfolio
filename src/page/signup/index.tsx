@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import "./index.css";
+import styles from "./index.module.css";
 
 interface SignUpSchema {
   email: string;
@@ -72,21 +72,20 @@ function SignUp() {
   };
 
   return (
-    <Box component={"section"} className="login-container">
-      <Typography className="login-title" variant="h2">
+    <Box component={"section"} className={styles.container}>
+      <Typography className={styles.title} variant="h2">
         회원가입
       </Typography>
 
       <Box
         component={"form"}
-        className="login-form"
+        className={styles.form}
         onSubmit={handleSubmit(onSubmit, (data) =>
           console.log("Error: ", data)
         )}
       >
         <TextField
           {...register("email")}
-          className="input-email"
           label="email"
           variant="outlined"
           error={Boolean(errors.email)}
@@ -96,7 +95,6 @@ function SignUp() {
         />
         <TextField
           {...register("password")}
-          className="input-pw"
           type={showPassword ? "text" : "password"}
           label="Password"
           variant="outlined"
@@ -114,7 +112,6 @@ function SignUp() {
         />
         <TextField
           {...register("password-confirm")}
-          className="input-pw"
           type={showPasswordConfirm ? "text" : "password"}
           label="Password Confirm"
           variant="outlined"
@@ -137,7 +134,7 @@ function SignUp() {
             ),
           }}
         />
-        <Button className="login-btn" variant="contained" type="submit">
+        <Button className={styles.btn} variant="contained" type="submit">
           가입하기
         </Button>
         <Box>

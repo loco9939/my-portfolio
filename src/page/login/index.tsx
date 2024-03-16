@@ -17,7 +17,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import "./index.css";
+import styles from "./index.module.css";
 
 interface LoginSchema {
   email: string;
@@ -76,21 +76,20 @@ function Login() {
   }
 
   return (
-    <Box component={"section"} className="login-container">
-      <Typography className="login-title" variant="h2">
+    <Box component={"section"} className={styles["login-container"]}>
+      <Typography className={styles["login-title"]} variant="h2">
         로그인
       </Typography>
 
       <Box
         component={"form"}
-        className="login-form"
+        className={styles["login-form"]}
         onSubmit={handleSubmit(onSubmit, (data) =>
           console.log("on Submit Error: ", data)
         )}
       >
         <TextField
           {...register("email")}
-          className="input-email"
           label="Email"
           variant="outlined"
           error={Boolean(errors.email)}
@@ -99,7 +98,6 @@ function Login() {
         <TextField
           {...register("password")}
           type={showPassword ? "text" : "password"}
-          className="input-pw"
           label="Password"
           variant="outlined"
           error={Boolean(errors.password)}
@@ -117,7 +115,11 @@ function Login() {
             ),
           }}
         />
-        <Button className="login-btn" variant="contained" type="submit">
+        <Button
+          className={styles["login-btn"]}
+          variant="contained"
+          type="submit"
+        >
           로그인
         </Button>
         <Box>

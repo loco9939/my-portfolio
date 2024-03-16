@@ -1,18 +1,21 @@
 .login-container {
-  width: 400px;
+  max-width: 450px;
+  width: 80%;
+  min-width: 300px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid #1976d2;
   border-radius: 8px;
-  padding: 48px 24px;
+  padding: 24px;
   text-align: center;
 }
 
 .login-title {
   font-weight: bold;
   margin-bottom: 12px;
+  font-size: 3rem;
 }
 
 .login-form {
@@ -24,4 +27,11 @@
 
 .login-btn {
   margin-block: 12px;
+}
+
+/* NOTE: 기본 1440을 기준으로 브라우저 너비가 줄어들어서 600px 이하가 됐을 때, 적용되는 스타일링 */
+@media screen and (max-width: 600px) {
+  .login-title {
+    font-size: 2rem;
+  }
 }

@@ -4,22 +4,3 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
-
-.header,
-.footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding-block: 20px;
-  font-size: 2rem;
-}
-
-.logout {
-  position: absolute;
-  right: 24px;
-}
-
-.edit {
-  position: absolute;
-  right: 143px;
-}
