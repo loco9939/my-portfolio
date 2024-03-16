@@ -1,0 +1,50 @@
+.header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding-block: 20px;
+  font-size: 2rem;
+
+  .nav {
+    position: relative;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: -3px;
+      left: 20px;
+    }
+
+    .menu {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .hamburger {
+      position: absolute;
+      top: 0;
+      right: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .menu {
+    visibility: hidden;
+  }
+
+  .hamburger {
+    display: inline-block;
+  }
+}
+
+/* TODO: 왜 기본값에 display: none을 주고 max-width로만 했을 경우 아이콘이 나타났다 안나타났다 하는 이유 알아내기 */
+@media screen and (min-width: 600px) {
+  .hamburger {
+    display: none;
+  }
+}

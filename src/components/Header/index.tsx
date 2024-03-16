@@ -1,7 +1,9 @@
 import { UserContext } from "@/context/user";
+import { Menu } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import styles from "./header.module.css";
 
 const Header = () => {
   const { user, setUser } = useContext(UserContext);
@@ -17,18 +19,33 @@ const Header = () => {
   };
 
   return (
-    <Box component={"header"} className="header">
-      <Link to={"/"}>My Portfolio</Link>
-      {user?.monthlyAssets && (
-        <Link to={"/edit-assets"} className="edit">
-          Edit
+    <Box component={"header"} className={styles.header}>
+      <Box component={"nav"} className={styles.nav}>
+        <Link to={"/"} className={styles.logo}>
+          <img src="my-portfolio-icon.svg" alt="logo" />
         </Link>
-      )}
-      {user && (
-        <Link to={"/signin"} onClick={onClickLogout} className="logout">
-          Logout
+        <Link to={"/"} className={styles.title}>
+          My Portfolio
         </Link>
-      )}
+
+        <Box className={styles.menu}>
+          {user?.monthlyAssets && (
+            <Link to={"/edit-assets"} className={styles.edit}>
+              Edit
+            </Link>
+          )}
+          {user && (
+            <Link
+              to={"/signin"}
+              onClick={onClickLogout}
+              className={styles.logout}
+            >
+              Logout
+            </Link>
+          )}
+        </Box>
+        <Menu className={styles.hamburger} />
+      </Box>
     </Box>
   );
 };
