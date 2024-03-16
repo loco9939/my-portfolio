@@ -10,7 +10,7 @@ export interface MonthlyAssets {
   [key: string]: FinancialData;
 }
 
-interface User {
+export interface User {
   email: string;
   lastUpdate: string;
   monthlyAssets: MonthlyAssets;

@@ -1,4 +1,5 @@
 import { postSignIn } from "@/apis";
+import { UserContext } from "@/context/user";
 import { useLogin } from "@/routes/root.hooks";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -12,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -35,6 +36,7 @@ function Login() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,8 +47,10 @@ function Login() {
 
     try {
       const { data } = await postSignIn({ email, password });
+
+      setUser({ email, ...data });
       window.localStorage.setItem("user", JSON.stringify({ email, ...data }));
-      //   // TODO: 로그인 성공 시 <Dashboard /> 컴포넌트 렌더링 되지만, URL은 signin으로 유지되는 문제
+
       alert("로그인에 성공했습니다!");
 
       if (data.financialData) {
